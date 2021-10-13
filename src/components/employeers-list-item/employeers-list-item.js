@@ -6,7 +6,7 @@ class EmployeersListItem extends Component {
         super(props);
         this.state = {
             increase: false,
-            star: false,
+            rise: false,
         }
     }
 
@@ -16,23 +16,23 @@ class EmployeersListItem extends Component {
         }))
     }
 
-    favoriteWorker = () => {
-        this.setState(({ star }) => ({
-            star: !star
+    onRise = () => {
+        this.setState(({ rise }) => ({
+            rise: !rise
         }))
 
     }
 
     render() {
         const { name, salary } = this.props;
-        const { increase, star } = this.state; // increase приходит не из props, а из state
+        const { increase, rise } = this.state; // increase приходит не из props, а из state
 
         let classNames = "list-group-item d-flex justify-content-between";
         if (increase) {
             classNames += ' increase';
         }
 
-        if (star) {
+        if (rise) {
             classNames += ' like';
         }
 
@@ -40,7 +40,7 @@ class EmployeersListItem extends Component {
         return (
             <li className={classNames}>
                 <span className="list-group-item-label"
-                    onClick={this.favoriteWorker}>{name}</span>
+                    onClick={this.onRise}>{name}</span>
                 <input type="text" className="list-group-item-input" defaultValue={salary + '$'} />
                 <div className="d-flex justify-content-center aligh-items-center">
                     <button type="button"
