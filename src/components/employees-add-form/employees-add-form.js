@@ -13,6 +13,7 @@ class EmployeesAddForm extends Component {
     }
 
     onValueChange = (e) => {
+        console.log(e.target.name, e.target.value);
         this.setState({
             [e.target.name]: e.target.value
         })
@@ -21,11 +22,13 @@ class EmployeesAddForm extends Component {
 
     onSubmit = (e) => {
         e.preventDefault();
-        this.props.onAdd(this.state.name, this.state.salary)
-        this.setState({
-            name: '',
-            salary: ''
-        })
+        if (this.state.name && this.state.salary && this.state.name.length > 2 && this.state.salary.length > 2 ) {
+            this.props.onAdd(this.state.name, this.state.salary)
+            this.setState({
+                name: '',
+                salary: ''
+            })
+        }
     }
 
 
