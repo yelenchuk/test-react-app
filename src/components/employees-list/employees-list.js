@@ -1,11 +1,12 @@
 import EmployeesListItem from "../employees-list-item/employees-list-item"
 import './employees-list.css'
 
-const EmployeesList = ({ data, onDelete, onToggleProp }) => {
+const EmployeesList = ({ data, onDelete, onToggleProp, testFunction }) => {
     const elements = data.map(item => {
         const { id, ...itemProps } = item; // диструктуризация по остаточному принципу
         return (
             <EmployeesListItem
+                fromChildToParent={() => { logChildData()}}
                 key={id}
                 {...itemProps}
                 onDelete={() => onDelete(id)}
@@ -13,6 +14,10 @@ const EmployeesList = ({ data, onDelete, onToggleProp }) => {
              />
         )
     })
+
+    const logChildData = (data) => {
+        console.log(data);
+    }
 
     return (
         <ul className="app-list list-group">

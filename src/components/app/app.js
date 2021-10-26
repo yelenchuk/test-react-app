@@ -16,21 +16,17 @@ class App extends Component {
                 { name: "John C.", salary: 800, increase: false, rise: true, id: 1 },
                 { name: "Alex M.", salary: 3000, increase: true, rise: false, id: 2 },
                 { name: "Carl W.", salary: 5000, increase: false, rise: false, id: 3 },
-            ]
+            ],
+            term: ''
         }
         this.maxId = 4;
     }
 
     deleteItem = (id) => {
         this.setState(({ data }) => {
-            //const index = data.findIndex(elem => elem.id === id);
-            // const before = data.slice(0, index);
-            // const after = data.slice(index + 1);
-            // const newArr = [...before, ...after];
             return {
                 data: data.filter(item => item.id !== id)
-            }
-            
+            }  
         })
     }
 
@@ -61,32 +57,49 @@ class App extends Component {
         }))
     }
 
+    searchEmp = (items, term) => {
+        if (term.lenght === 0) {
+            return items;
+        }
+
+        return items.filter(item => {
+            return item.name.indexOf(term) > -1
+        })
+    }
+
+    onUpdateSearch = (term) => { //отвечает за состояние внутри нашего главного компонента App.js
+        this.setState({ term }); // сокращенная запись объектов {term: term}
+    }
+
+    testConsole = (name) => {
+        console.log(name);
+    }
+
 
     render() {
-
+        const { data, term } = this.state;
         const employees = this.state.data.length;
         const increased = this.state.data.filter(item => item.increase).length;
+        const visiableData = this.searchEmp(data, term); // получим массив отфильтрованный по строче из другого компонента term
       
         return (
             <div className="app">
                 <AppInfo employees={employees} increased={increased} />
 
                 <div className="search-panel">
-                    <SearchPanel />
+                    <SearchPanel onUpdateSearchChild={this.onUpdateSearch} /> 
                     <AppFilter />
                 </div>
 
                 <EmployeesList
-                    data={this.state.data}
+                    testFunction={this.testConsole}
+                    data={visiableData}
                     onDelete={this.deleteItem}
                     onToggleProp={this.onToggleProp}/>
                 <EmployeesAddForm onAdd={this.addItem}/>
             </div>
         );
-
-
-    }
-    
+    } 
 }
 
    
