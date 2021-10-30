@@ -17,7 +17,8 @@ class App extends Component {
                 { name: "Alex M.", salary: 3000, increase: true, rise: false, id: 2 },
                 { name: "Carl W.", salary: 5000, increase: false, rise: false, id: 3 },
             ],
-            term: ''
+            term: '',
+            filter: 'all'
         }
         this.maxId = 4;
     }
@@ -26,7 +27,7 @@ class App extends Component {
         this.setState(({ data }) => {
             return {
                 data: data.filter(item => item.id !== id)
-            }  
+            }
         })
     }
 
@@ -36,16 +37,16 @@ class App extends Component {
             salary,
             increase: false,
             rise: false,
-            id: this.maxId++   
+            id: this.maxId++
         }
-        this.setState(({data}) => {
+        this.setState(({ data }) => {
             const newArr = [...data, newItem];
             return {
                 data: newArr
             }
         });
     }
-    
+
     onToggleProp = (id, prop) => {
         this.setState(({ data }) => ({
             data: data.map(item => {
@@ -71,38 +72,48 @@ class App extends Component {
         this.setState({ term }); // сокращенная запись объектов {term: term}
     }
 
-    testConsole = (name) => {
-        console.log(name);
+    filterPost = (items, filter) => {
+        switch (filter) {
+            case 'rise':
+                return items.filter(item => item.rise);
+            case 'moreThen1000':
+                return items.filter(item => item.salary > 1000);
+            default:
+                return items
+        }
+    }
+
+    onFilterSelect = (filter) => {
+        this.setState({ filter });
     }
 
 
     render() {
-        const { data, term } = this.state;
+        const { data, term, filter } = this.state;
         const employees = this.state.data.length;
         const increased = this.state.data.filter(item => item.increase).length;
-        const visiableData = this.searchEmp(data, term); // получим массив отфильтрованный по строче из другого компонента term
-      
+        const visiableData = this.filterPost(this.searchEmp(data, term), filter); // this.searchEmp(data, term); получим массив отфильтрованный по строче из другого компонента term
+
+
         return (
             <div className="app">
                 <AppInfo employees={employees} increased={increased} />
-
                 <div className="search-panel">
-                    <SearchPanel onUpdateSearchChild={this.onUpdateSearch} /> 
-                    <AppFilter />
+                    <SearchPanel onUpdateSearchChild={this.onUpdateSearch} />
+                    <AppFilter filter={filter} onFilterSelect={this.onFilterSelect} />
                 </div>
 
                 <EmployeesList
-                    testFunction={this.testConsole}
                     data={visiableData}
                     onDelete={this.deleteItem}
-                    onToggleProp={this.onToggleProp}/>
-                <EmployeesAddForm onAdd={this.addItem}/>
+                    onToggleProp={this.onToggleProp} />
+                <EmployeesAddForm onAdd={this.addItem} />
             </div>
         );
-    } 
+    }
 }
 
-   
- 
+
+
 
 export default App;

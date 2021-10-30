@@ -13,14 +13,8 @@ const EmployeesListItem = (props) => {
             classNames += ' like';
         }
     
-    const fromChildToParent = (data) => {
-        this.props.fromChildToParent(data)
-    }
-
-
         return (
-            <li className={classNames}
-                onClick={() => fromChildToParent(name)}>
+            <li className={classNames}>
                 <span className="list-group-item-label"
                     onClick={onToggleProp} data-toggle ="rise">{name}</span>
                 <input type="text" className="list-group-item-input" defaultValue={salary + '$'} />
